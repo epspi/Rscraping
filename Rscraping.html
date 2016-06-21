@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Scraping with R</title>
+  <meta name="description" content="">
+  <meta name="author" content="Eugene Pyatigorsky">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="stylesheet" href="libraries/frameworks/revealjs/css/reveal.min.css">
+  <link rel="stylesheet" href="libraries/frameworks/revealjs/css/theme/night.css" id="theme">
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/Github.css" id="theme">
+  <!--[if lt IE 9]>
+  <script src="lib/js/html5shiv.js"></script>
+  <![endif]-->  <link rel="stylesheet" href = "assets/css/Icon">
+<link rel="stylesheet" href = "assets/css/mystyle.css">
+
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section class='' data-state='' id='slide-1'>
+  <h1>Scraping with <strong>R</strong></h1>
+  <p><br><br><br><br>
+<footer>
+Cincinnati R Users Group<br>
+June 21, 2016  <br><br>
+<strong>Eugene Pyatigorsky</strong>
+</footer></p>
+
+</section>
+<section class='' data-state='' id='slide-2'>
+  <h2>Agenda</h2>
+  <ul>
+<li>Overview of packages</li>
+<li>A look at how to scrape</li>
+<li>Working example</li>
+<li>Best practices</li>
+</ul>
+
+</section>
+<section class='chapter' data-state='' id='slide-3'>
+  <h1>Overview of packages</h1>
+  
+</section>
+<section>
+   <section class='' data-state=''>
+    <h2>rvest</h2>
+    <p>Most of the work will be done by Hadley&#39;s package <code>rvest</code></p>
+
+<ul>
+<li>Based on Python&#39;s <code>beautifulsoup</code></li>
+<li>Extracts elements from the dom using CSS or XPath</li>
+</ul>
+
+<p class='fragment'><strong>e.g.<br><code>rvest::read_table()</code></strong></p>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+   <section class='' data-state=''>
+    <h2>httr</h2>
+
+<p>This is (Hadley&#39;s) wrapper for <code>curl</code></p>
+
+<ul>
+<li>Really useful for making customized calls to APIs</li>
+<li>Can also be used for writing your own APIs</li>
+</ul>
+
+<p class='fragment'><strong>e.g.<br><code>httr::GET(&quot;some_endpoint&quot;, config)</code></strong></p>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+</section>
+<section class='chapter' data-state='' id='slide-5'>
+  <h1>How to Scrape: An Example</h1>
+  
+</section>
+<section>
+   <section class='' data-state=''>
+    <h2>Let&#39;s ask Bing about the R Users Group</h2>
+    <pre><code class="r">lnk &lt;- &#39;http://www.bing.com/search?q=Cincinnati+R+users+group&amp;go=Submit&amp;qs=n&amp;form=QBLH&amp;pq=cincinnati+r+users+g&amp;sc=0-20&amp;sp=-1&amp;sk=&amp;cvid=4A13A7CB066B419B9F7BD75777D68F09&#39;
+
+read_html(lnk) %&gt;% 
+    html_nodes(&quot;h2 a&quot;) %&gt;% 
+    html_text
+</code></pre>
+
+<pre><code>## [1] &quot;Cincinnati UC Users Group (Cincinnati, OH) - Meetup&quot;        
+## [2] &quot;Local R User Group Directory - Revolutions&quot;                 
+## [3] &quot;New R User Group in Cincinnati / Dayton - Revolutions&quot;      
+## [4] &quot;Cincinnati Sharepoint User Group - Facebook&quot;                
+## [5] &quot;Cincinnati .Net Users Group&quot;                                
+## [6] &quot;CincyPowerShell | PowerShell Community Groups&quot;              
+## [7] &quot;Reinaldo R. - Cincinnati UC Users Group (Cincinnati, OH ...&quot;
+## [8] &quot;Group: Cincinnati |Tableau Support Community&quot;
+</code></pre>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+   <section class='' data-state=''>
+    <h2>Common CSS Selectors</h2>
+
+<ul>
+<li><code>#</code> for &quot;id=&quot;</li>
+<li><code>.</code> for &quot;class=&quot;</li>
+</ul>
+
+<p class='fragment'><strong>OR you can use SelectorGadget for Chrome</strong>
+<br>
+<a href="https://chrome.google.com/webstore/detail/selectorgadget/">https://chrome.google.com/webstore/detail/selectorgadget/</a></p>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+</section>
+<section class='chapter' data-state='' id='slide-7'>
+  <h1>A Working Site</h1>
+  
+</section>
+<section>
+   <section class='' data-state=''>
+    
+    <p><a href="http://cincyreal.followthenumbers.com">Cincinnati Foreclosures - A Real Estate Scraper</a></p>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+</section>
+<section class='chapter' data-state='' id='slide-9'>
+  <h1>Best Practices</h1>
+  
+</section>
+<section>
+   <section class='' data-state=''>
+    <h2>Authentication</h2>
+    <p>Use APIs instead of scraping whenever possible. There isn&#39;t a lot of documentation for <code>rvest</code> and cookie-based authentication can be tricky.</p>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+   <section class='' data-state=''>
+    <h2>Automation</h2>
+
+<ul>
+<li>The real power of <code>R</code> and <code>rvest</code> shines when used with <code>shiny</code> (npi).</li>
+<li>Put your scraping code in a standalone R script and automate with <code>cron</code>. </li>
+</ul>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+</section>
+    </div>
+  </div>
+</body>
+  <script src="libraries/frameworks/revealjs/lib/js/head.min.js"></script>
+  <script src="libraries/frameworks/revealjs/js/reveal.min.js"></script>
+  <script>
+  // Full list of configuration options available here:
+  // https://github.com/hakimel/reveal.js#configuration
+  Reveal.initialize({
+    controls: true,
+    progress: true,
+    history: true,
+    center: true,
+    theme: Reveal.getQueryHash().theme || 'night', 
+    transition: Reveal.getQueryHash().transition || 'default', 
+    dependencies: [
+    // Cross-browser shim that fully implements classList -
+    // https://github.com/eligrey/classList.js/
+      { src: 'libraries/frameworks/revealjs/lib/js/classList.js', condition: function() { return !document.body.classList;}},
+      // Zoom in and out with Alt+click
+      { src: 'libraries/frameworks/revealjs/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      // Speaker notes
+      { src: 'libraries/frameworks/revealjs/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+      // Remote control your reveal.js presentation using a touch device
+      //{ src: 'libraries/frameworks/revealjs/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+      ]
+  });
+  </script>  <!-- LOAD HIGHLIGHTER JS FILES -->
+<script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!-- DONE LOADING HIGHLIGHTER JS FILES -->
+ 
+
+</html>
