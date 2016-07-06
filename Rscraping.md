@@ -23,6 +23,9 @@ knit        : slidify::knit2slides
 Cincinnati R Users Group<br>
 June 21, 2016  <br><br>
 **Eugene Pyatigorsky**
+<br><br>
+This presentation and supporting materials available at:<br>
+https://github.com/epspi/Rscraping
 </footer>
 
 ---
@@ -122,3 +125,7 @@ Use APIs instead of scraping whenever possible. There isn't a lot of documentati
 
 * The real power of `R` and `rvest` shines when used with `shiny` (npi).
 * Put your scraping code in a standalone R script and automate with `cron`. 
+
+***
+
+## End
